@@ -7,35 +7,13 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
+    transition: { staggerChildren: 0.15, delayChildren: 0.3 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: "easeOut" },
-  },
-};
-
-const floatVariants = {
-  float: {
-    y: [0, -20, 0],
-    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-  },
-};
-
-const pulseVariants = {
-  pulse: {
-    scale: [1, 1.05, 1],
-    opacity: [0.8, 1, 0.8],
-    transition: { duration: 2, repeat: Infinity },
-  },
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeOut" } },
 };
 
 export default function HomePage() {
@@ -43,204 +21,152 @@ export default function HomePage() {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setDailySales((prev) => (prev >= 2500000 ? 2500000 : prev + 25000));
-    }, 50);
+    const salesTimer = setInterval(() => {
+      setDailySales((prev) => (prev >= 5000000 ? 5000000 : prev + 50000));
+    }, 30);
 
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      clearInterval(timer);
+      clearInterval(salesTimer);
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
     <div className="page-shell">
-      {/* Animated background elements */}
-      <div className="floating-glow glow-one" style={{ transform: `translateY(${scrollY * 0.5}px)` }} />
-      <div className="floating-glow glow-two" style={{ transform: `translateY(${scrollY * 0.3}px)` }} />
-      <div className="floating-glow glow-three" />
-      <div className="grid-background" />
-      <div className="noise-overlay" />
+      {/* Animated Background */}
+      <div className="bg-orb orb-1" style={{ transform: `translateY(${scrollY * 0.3}px)` }} />
+      <div className="bg-orb orb-2" style={{ transform: `translateY(${scrollY * 0.5}px)` }} />
+      <div className="bg-orb orb-3" style={{ transform: `translateY(${scrollY * 0.4}px)` }} />
+      <div className="stars" />
 
       {/* Header */}
-      <header className="topbar">
-        <motion.div className="logo" whileHover={{ scale: 1.05 }}>
+      <motion.header className="topbar" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+        <motion.div className="logo" whileHover={{ scale: 1.1, rotate: 5 }}>
           ⚡ Kaduna Electric
         </motion.div>
         <nav className="nav-links">
-          <a href="#features" className="nav-link-item">Features</a>
-          <a href="#how-it-works" className="nav-link-item">How it works</a>
-          <a href="#credit" className="nav-link-item">Credit</a>
+          <a href="#features">Features</a>
+          <a href="#how">How It Works</a>
+          <a href="#credit">Credit</a>
           <Link to="/login" className="nav-button">Login</Link>
-          <Link to="/register" className="nav-button nav-button-secondary">Register</Link>
+          <Link to="/register" className="nav-button nav-secondary">Register</Link>
         </nav>
-      </header>
+      </motion.header>
 
       <main className="container">
-        {/* Hero Section */}
-        <motion.section
-          className="hero"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="hero-left">
-            <motion.span className="badge" variants={itemVariants}>
-              ⚡ Smart utility payments
-            </motion.span>
+        {/* HERO SECTION - DRAMATIC */}
+        <motion.section className="hero-section" variants={containerVariants} initial="hidden" animate="visible">
+          <div className="hero-content">
+            <motion.div className="hero-badge" variants={itemVariants}>
+              ✨ The future of utility payments
+            </motion.div>
 
             <motion.h1 className="hero-title" variants={itemVariants}>
-              Power your life with
-              <span className="gradient-text"> lightning-fast</span> electricity tokens
+              Power at your
+              <span className="gradient-glow"> fingertips</span>
             </motion.h1>
 
             <motion.p className="hero-subtitle" variants={itemVariants}>
-              Buy tokens in seconds, track meters effortlessly, and enjoy flexible credit options. The future of utility payments is here.
+              Buy electricity tokens in seconds, track usage in real-time, and unlock flexible credit options. Experience payments reimagined.
             </motion.p>
 
-            <motion.div className="hero-actions" variants={itemVariants}>
-              <Link to="/register" className="primary-btn">
-                <span>Get Started</span>
+            <motion.div className="hero-buttons" variants={itemVariants}>
+              <Link to="/register" className="btn-primary">
+                <span>Start Free Now</span>
                 <span className="btn-arrow">→</span>
               </Link>
-              <a href="#features" className="secondary-btn">
-                <span>Learn More</span>
-              </a>
+              <a href="#features" className="btn-secondary">Learn More</a>
             </motion.div>
 
-            <motion.div className="trust-badges" variants={itemVariants}>
-              <div className="trust-item">
-                <span className="trust-number">9.8K+</span>
-                <span className="trust-label">Happy customers</span>
+            {/* Trust Stats */}
+            <motion.div className="trust-grid" variants={itemVariants}>
+              <div className="trust-stat">
+                <div className="stat-number">9.8K+</div>
+                <div className="stat-label">Happy Customers</div>
               </div>
-              <div className="trust-item">
-                <span className="trust-number">₦2.5B+</span>
-                <span className="trust-label">Processed</span>
+              <div className="trust-stat">
+                <div className="stat-number">₦2.5B+</div>
+                <div className="stat-label">Processed Daily</div>
               </div>
-              <div className="trust-item">
-                <span className="trust-number">99.9%</span>
-                <span className="trust-label">Uptime</span>
+              <div className="trust-stat">
+                <div className="stat-number">99.9%</div>
+                <div className="stat-label">Uptime Guaranteed</div>
               </div>
             </motion.div>
           </div>
 
-          {/* Hero Right - Interactive Card */}
-          <motion.div className="hero-right" variants={itemVariants}>
-            <motion.div className="hero-card" variants={floatVariants} animate="float">
+          {/* HERO VISUAL - ANIMATED CARD */}
+          <motion.div className="hero-visual" variants={itemVariants}>
+            <motion.div
+              className="floating-card"
+              animate={{ y: [0, -30, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+            >
               <div className="card-glow" />
-              <div className="card-content">
+              <div className="card-inner">
                 <div className="card-header">
-                  <div className="card-title">
-                    <span className="card-icon">📊</span>
-                    <span>Live Dashboard</span>
-                  </div>
-                  <motion.span className="live-badge" variants={pulseVariants} animate="pulse">
-                    LIVE
-                  </motion.span>
+                  <span className="card-title">📊 Live Dashboard</span>
+                  <span className="live-badge">● LIVE</span>
                 </div>
 
-                <div className="card-stats">
-                  <div className="stat-block">
-                    <div className="stat-value" style={{ fontSize: "2.5rem" }}>
-                      ₦{(dailySales / 1000000).toFixed(1)}M
-                    </div>
-                    <div className="stat-label">Daily Revenue</div>
-                  </div>
+                <div className="card-stat-big">
+                  <div className="stat-big-value">₦{(dailySales / 1000000).toFixed(1)}M</div>
+                  <div className="stat-big-label">Today's Revenue</div>
                 </div>
 
-                <div className="card-breakdown">
-                  {[
-                    { label: "Transactions", value: "12.4K", color: "#22d3ee" },
-                    { label: "Customers", value: "9.8K", color: "#3b82f6" },
-                    { label: "Uptime", value: "99.9%", color: "#10b981" },
-                  ].map((item) => (
-                    <motion.div key={item.label} className="breakdown-item" whileHover={{ x: 5 }}>
-                      <div className="breakdown-dot" style={{ background: item.color }} />
-                      <div>
-                        <div className="breakdown-label">{item.label}</div>
-                        <div className="breakdown-value">{item.value}</div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                <div className="card-footer">
-                  <div className="progress-bar">
-                    <motion.div
-                      className="progress-fill"
-                      initial={{ width: "0%" }}
-                      animate={{ width: "87%" }}
-                      transition={{ duration: 2 }}
-                    />
-                  </div>
-                  <span className="progress-label">87% Monthly Target</span>
+                <div className="card-metrics">
+                  <motion.div className="metric" whileHover={{ x: 8 }}>
+                    <div className="metric-bar" style={{ width: "87%" }} />
+                    <div className="metric-text">12.4K Transactions</div>
+                  </motion.div>
+                  <motion.div className="metric" whileHover={{ x: 8 }}>
+                    <div className="metric-bar" style={{ width: "92%" }} />
+                    <div className="metric-text">9.8K Customers</div>
+                  </motion.div>
+                  <motion.div className="metric" whileHover={{ x: 8 }}>
+                    <div className="metric-bar" style={{ width: "100%" }} />
+                    <div className="metric-text">99.9% Uptime</div>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>
           </motion.div>
         </motion.section>
 
-        {/* Features Section */}
+        {/* FEATURES - SPECTACULAR */}
         <motion.section
           id="features"
           className="features-section"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1 }}
         >
-          <div className="section-header">
-            <motion.p className="section-label" variants={itemVariants}>
-              Why we're different
-            </motion.p>
-            <motion.h2 className="section-title" variants={itemVariants}>
-              Everything you need for seamless payments
-            </motion.h2>
-          </div>
+          <motion.div className="section-header" variants={itemVariants}>
+            <div className="section-badge">Why choose us</div>
+            <h2>Engineered for speed. Designed for you.</h2>
+          </motion.div>
 
           <div className="features-grid">
             {[
-              {
-                icon: "⚡",
-                title: "Lightning Fast",
-                desc: "Buy tokens in under 10 seconds with our optimized checkout.",
-              },
-              {
-                icon: "🔒",
-                title: "Bank-Level Security",
-                desc: "Your data is encrypted and protected with enterprise security.",
-              },
-              {
-                icon: "💳",
-                title: "Flexible Payment",
-                desc: "Pay instantly or use our smart credit facility for later.",
-              },
-              {
-                icon: "📱",
-                title: "Mobile First",
-                desc: "Beautiful experience on any device, anywhere, anytime.",
-              },
-              {
-                icon: "📊",
-                title: "Smart Analytics",
-                desc: "Track your usage, spending, and save with insights.",
-              },
-              {
-                icon: "🤝",
-                title: "24/7 Support",
-                desc: "Our team is always here to help with any questions.",
-              },
-            ].map((feature, idx) => (
+              { icon: "⚡", title: "Lightning Fast", desc: "Complete payment in under 5 seconds" },
+              { icon: "🔐", title: "Bank Security", desc: "Military-grade encryption on all data" },
+              { icon: "💳", title: "Smart Credit", desc: "Flexible payment with ₦20K limit" },
+              { icon: "📱", title: "Mobile First", desc: "Perfect on any device, anywhere" },
+              { icon: "📈", title: "Live Analytics", desc: "Real-time usage and spending insights" },
+              { icon: "🛟", title: "24/7 Support", desc: "Always here when you need us" },
+            ].map((feature, i) => (
               <motion.div
-                key={idx}
-                className="feature-card"
-                initial={{ opacity: 0, y: 30 }}
+                key={i}
+                className="feature-box"
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                whileHover={{ y: -10, boxShadow: "0 30px 60px rgba(34, 211, 238, 0.2)" }}
+                whileHover={{ y: -15, boxShadow: "0 50px 100px rgba(34, 211, 238, 0.2)" }}
               >
                 <div className="feature-icon">{feature.icon}</div>
                 <h3>{feature.title}</h3>
@@ -250,71 +176,71 @@ export default function HomePage() {
           </div>
         </motion.section>
 
-        {/* How It Works */}
+        {/* HOW IT WORKS */}
         <motion.section
-          id="how-it-works"
-          className="how-it-works"
+          id="how"
+          className="how-section"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          <div className="section-header">
-            <motion.p className="section-label">Simple process</motion.p>
-            <motion.h2 className="section-title">Get power in 4 easy steps</motion.h2>
-          </div>
+          <motion.div className="section-header" variants={itemVariants}>
+            <div className="section-badge">Simple steps</div>
+            <h2>Get power in 4 taps</h2>
+          </motion.div>
 
-          <div className="steps-container">
+          <div className="steps-flow">
             {[
-              { num: "01", title: "Create Account", desc: "Sign up in less than a minute with your email." },
-              { num: "02", title: "Add Your Meter", desc: "Enter your meter number for verification." },
-              { num: "03", title: "Choose Amount", desc: "Pick token value that suits your needs." },
-              { num: "04", title: "Get Power", desc: "Receive your token instantly via SMS & email." },
-            ].map((step, idx) => (
+              { num: "01", title: "Sign Up", desc: "Create your account in 30 seconds" },
+              { num: "02", title: "Add Meter", desc: "Verify your meter number" },
+              { num: "03", title: "Buy Token", desc: "Choose your amount" },
+              { num: "04", title: "Done!", desc: "Get token instantly via SMS" },
+            ].map((step, i) => (
               <motion.div
-                key={idx}
-                className="step-card"
-                initial={{ opacity: 0, x: -30 }}
+                key={i}
+                className="step-item"
+                initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.15 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.15 }}
               >
-                <div className="step-number">{step.num}</div>
+                <div className="step-num">{step.num}</div>
                 <div className="step-content">
                   <h3>{step.title}</h3>
                   <p>{step.desc}</p>
                 </div>
-                {idx < 3 && <div className="step-arrow">→</div>}
+                {i < 3 && <div className="step-arrow">→</div>}
               </motion.div>
             ))}
           </div>
         </motion.section>
 
-        {/* Credit Banner */}
+        {/* CREDIT SECTION */}
         <CreditBanner />
 
-        {/* CTA Section */}
+        {/* CTA FINALE */}
         <motion.section
-          className="cta-section"
+          className="cta-finale"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          <div className="cta-content">
-            <h2>Ready to power up?</h2>
-            <p>Join thousands of happy customers enjoying fast, secure electricity token payments.</p>
-            <Link to="/register" className="cta-button">
-              Start Now →
-            </Link>
-          </div>
+          <motion.div className="cta-content" variants={containerVariants}>
+            <motion.h2 variants={itemVariants}>Ready to power up?</motion.h2>
+            <motion.p variants={itemVariants}>Join the electricity revolution. Fast, secure, and flexible.</motion.p>
+            <motion.div variants={itemVariants}>
+              <Link to="/register" className="cta-btn">Start Now →</Link>
+            </motion.div>
+          </motion.div>
         </motion.section>
       </main>
 
       {/* Footer */}
       <footer className="footer">
-        <div className="footer-content">
+        <div className="footer-inner">
           <div className="footer-brand">
-            <div className="footer-logo">⚡ Kaduna Electric</div>
-            <p>Making electricity payments simple, fast, and secure.</p>
+            <h3>⚡ Kaduna Electric</h3>
+            <p>Powering Nigeria's future, one token at a time.</p>
           </div>
           <div className="footer-links">
             <div>
@@ -327,18 +253,18 @@ export default function HomePage() {
               <h4>Company</h4>
               <a href="#">About</a>
               <a href="#">Blog</a>
-              <a href="#">Careers</a>
+              <a href="#">Contact</a>
             </div>
             <div>
               <h4>Legal</h4>
               <a href="#">Privacy</a>
               <a href="#">Terms</a>
-              <a href="#">Contact</a>
+              <a href="#">Support</a>
             </div>
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2024 Kaduna Electric. All rights reserved.</p>
+          <p>&copy; 2024 Kaduna Electric. All rights reserved. | Built with ⚡ for Nigeria</p>
         </div>
       </footer>
     </div>
